@@ -6,7 +6,7 @@ import PointEdit from '../view/editing-point';
 import Point from '../view/point';
 
 class Trip{
-  constructor(container) {
+  constructor({container}) {
     this.component = new TripList();
     this.container = container;
   }
