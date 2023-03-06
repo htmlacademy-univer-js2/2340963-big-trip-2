@@ -1,6 +1,7 @@
+import {createElement} from '../render';
+
 export const Point = () => (
-  `<ul class="trip-events__list">
-      <li class="trip-events__item">
+  `<li class="trip-events__item">
         <div class="event">
           <time class="event__date" dateTime="2019-03-18">MAR 18</time>
           <div class="event__type">
@@ -37,7 +38,23 @@ export const Point = () => (
             <span class="visually-hidden">Open event</span>
           </button>
         </div>
-      </li>
-  </ul>`
+  </li>`
 );
-export default Point();
+
+export default class PointView{
+  getTemplate(){
+    return Point;
+  }
+
+  getElement(){
+    if(!this.element){
+      this.element = createElement(this.getTemplate());
+    }
+
+    return this.element;
+  }
+
+  removeElement(){
+    this.element = null;
+  }
+}

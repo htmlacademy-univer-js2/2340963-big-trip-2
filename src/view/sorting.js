@@ -1,4 +1,6 @@
-export const sorting = () => (
+import {createElement} from '../render';
+
+const sorting = () => (
   `
   <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
             <div class="trip-sort__item  trip-sort__item--day">
@@ -28,4 +30,21 @@ export const sorting = () => (
   </form>
   `
 );
-export default sorting();
+
+export default class SortingView{
+  getTemplate(){
+    return sorting();
+  }
+
+  getElement(){
+    if(!this.element){
+      this.element = createElement(this.getTemplate());
+    }
+
+    return this.element;
+  }
+
+  removeElement(){
+    this.element = null;
+  }
+}
