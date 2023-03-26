@@ -1,23 +1,29 @@
 import {createElement} from '../render';
+import {createDuration, humanizePointDate} from '../utils';
 
-export const Point = () => (
-  `<li class="trip-events__item">
+export const Point = (point) => {
+  const {type, destination, startDate, endDate, cost} = point;
+  const dateFrom = startDate !== null ? humanizePointDate(startDate) : '';
+  const dateTo = endDate !== null ? humanizePointDate(endDate) : '';
+  const duration = startDate || endDate !== null ? createDuration(startDate, endDate) : '';
+  const city = destination.city;
+  return(`<li class="trip-events__item">
         <div class="event">
           <time class="event__date" dateTime="2019-03-18">MAR 18</time>
           <div class="event__type">
-            <img class="event__type-icon" width="42" height="42" src="img/icons/taxi.png" alt="Event type icon">
+            <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
           </div>
-          <h3 class="event__title">Taxi Amsterdam</h3>
+          <h3 class="event__title">${type} ${city}</h3>
           <div class="event__schedule">
             <p class="event__time">
-              <time class="event__start-time" dateTime="2019-03-18T10:30">10:30</time>
+              <time class="event__start-time" dateTime="2019-03-18T10:30">${dateFrom}</time>
               &mdash;
-              <time class="event__end-time" dateTime="2019-03-18T11:00">11:00</time>
+              <time class="event__end-time" dateTime="2019-03-18T11:00">${dateTo}</time>
             </p>
-            <p class="event__duration">30M</p>
+            <p class="event__duration">${duration}M</p>
           </div>
           <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value">20</span>
+          &euro;&nbsp;<span class="event__price-value">${cost}</span>
           </p>
           <h4 class="visually-hidden">Offers:</h4>
           <ul class="event__selected-offers">
@@ -38,12 +44,16 @@ export const Point = () => (
             <span class="visually-hidden">Open event</span>
           </button>
         </div>
-  </li>`
-);
+  </li>`);
+};
 
 export default class PointView{
+  constructor(point) {
+    this.point = point;
+  }
+
   getTemplate(){
-    return Point;
+    return Point(this.point);
   }
 
   getElement(){

@@ -30,6 +30,7 @@
     "node": "16"
   },
   "dependencies": {
-    "babel-loader": "^8.2.3"
+    "babel-loader": "^8.2.3",
+    "dayjs": "^1.11.7"
   }
 }

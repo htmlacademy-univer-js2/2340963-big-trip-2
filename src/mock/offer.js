@@ -1,4 +1,4 @@
-export const generateOffer = () => ({
+export const generateOfferByType = () => ({
   type: 'taxi',
   offers: [{
     id: 0,
@@ -6,4 +6,10 @@ export const generateOffer = () => ({
     price: 0,
   }
   ]
+});
+
+export const generateOffer = () => ({
+  id: 0,
+  title: '',
+  price: 0,
 });
