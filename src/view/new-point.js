@@ -21,8 +21,7 @@ export const newPoint = (crNewPoint) => {
                       <span class="event__offer-price">${offer.price}</span>
                     </label>
                   </div>`);
-    }
-    else {
+    } else {
       return(`<div class="event__offer-selector">
                     <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage">
                     <label class="event__offer-label" for="event-offer-luggage-1">
@@ -34,10 +33,9 @@ export const newPoint = (crNewPoint) => {
     }
   };
   const createOffersTemplates = () => {
-    if  (offers.length === 0) {
+    if (offers.length === 0) {
       return '';
-    }
-    else {
+    } else {
       let offersTemplates = '';
       const offersByType = generateOffersByType().find((x) => x.type === type);
       for (let i = 0; i < offersByType.offers.length; i++) {
@@ -175,19 +173,20 @@ export default class NewPointView{
     this.crNewPoint = crNewPoint;
   }
 
-  getTemplate(){
+  #element = null;
+  get template(){
     return newPoint(this.crNewPoint);
   }
 
-  getElement(){
-    if(!this.element){
-      this.element = createElement(this.getTemplate());
+  get element(){
+    if(!this.#element){
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement(){
-    this.element = null;
+    this.#element = null;
   }
 }
