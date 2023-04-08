@@ -8,10 +8,10 @@ export const Point = (point) => {
   const dateFrom = startDate !== null ? humanizePointDate(startDate, 'DD/MM/YY HH:mm') : '';
   const dateTo = endDate !== null ? humanizePointDate(endDate, 'DD/MM/YY HH:mm') : '';
   const date = startDate !== null ? humanizePointDate(startDate, 'D MMMM') : '';
-  const getDestination =  destination.length !== 0 ? generateDestination.find((x) => x.id === destination) : '';
+  const getDestination = destination.length !== 0 ? generateDestination.find((x) => x.id === destination) : '';
   const city = getDestination !== '' ? getDestination.city : '';
   const favoriteClass = isFavorite ? 'event__favorite-btn--active' : '';
-  const formattingDate = (diffDate) => diffDate < 10? `0${diffDate}`: `${diffDate}`;
+  const formattingDate = (diffDate) => diffDate < 10 ? `0${diffDate}` : `${diffDate}`;
   const calculateDuration = () => {
     const differenceDays = formattingDate(createDuration(startDate, endDate, 'day'));
     const differenceHours = formattingDate(createDuration(startDate, endDate, 'hour') - differenceDays * 24);
@@ -35,8 +35,7 @@ export const Point = (point) => {
               &plus;&euro;&nbsp;
               <span class="event__offer-price">${offer.price}</span>
             </li>`);
-    }
-    else {
+    } else {
       return '';
     }
   };
@@ -48,8 +47,7 @@ export const Point = (point) => {
         offersTemplates += generateOffers(offersByType.offers[i]);
       }
       return offersTemplates;
-    }
-    else {
+    } else {
       return '';
     }
   };
@@ -90,23 +88,24 @@ export const Point = (point) => {
 };
 
 export default class PointView{
-  constructor(point) {
+  constructor(point){
     this.point = point;
   }
 
-  getTemplate(){
+  #element = null;
+  get template(){
     return Point(this.point);
   }
 
-  getElement(){
-    if(!this.element){
-      this.element = createElement(this.getTemplate());
+  get element(){
+    if(!this.#element){
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement(){
-    this.element = null;
+    this.#element = null;
   }
 }
