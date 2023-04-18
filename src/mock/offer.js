@@ -1,5 +1,5 @@
 import {OFFERSBYTYPE, TYPES} from './const';
-import {getRandomInteger} from '../utils';
+import {getRandomInteger} from '../utils/common';
 
 const generateTitlePrice = () => OFFERSBYTYPE[getRandomInteger(OFFERSBYTYPE.length - 1)];
 const generateOffer = (id) => ({

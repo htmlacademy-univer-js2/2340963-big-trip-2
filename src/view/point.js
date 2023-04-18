@@ -1,5 +1,5 @@
-import {createElement} from '../render';
-import {createDuration, humanizePointDate} from '../utils';
+import AbstractView from '../framework/view/abstract-view';
+import {createDuration, humanizePointDate} from '../utils/point';
 import {generateOffersByType} from '../mock/offer';
 import {generateDestination} from '../mock/destination';
 
@@ -8,7 +8,7 @@ export const Point = (point) => {
   const dateFrom = startDate !== null ? humanizePointDate(startDate, 'DD/MM/YY HH:mm') : '';
   const dateTo = endDate !== null ? humanizePointDate(endDate, 'DD/MM/YY HH:mm') : '';
   const date = startDate !== null ? humanizePointDate(startDate, 'D MMMM') : '';
-  const getDestination = destination.length !== 0 ? generateDestination.find((x) => x.id === destination) : '';
+  const getDestination = destination !== 0 ? generateDestination.find((x) => x.id === destination) : '';
   const city = getDestination !== '' ? getDestination.city : '';
   const favoriteClass = isFavorite ? 'event__favorite-btn--active' : '';
   const formattingDate = (diffDate) => diffDate < 10 ? `0${diffDate}` : `${diffDate}`;
@@ -87,25 +87,23 @@ export const Point = (point) => {
   </li>`);
 };
 
-export default class PointView{
-  constructor(point){
-    this.point = point;
+export default class PointView extends AbstractView{
+  #point = null;
+  #handleEditClick = null;
+  constructor({point, onEditClick}){
+    super();
+    this.#point = point;
+    this.#handleEditClick = onEditClick;
+
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
   }
 
-  #element = null;
   get template(){
-    return Point(this.point);
+    return Point(this.#point);
   }
 
-  get element(){
-    if(!this.#element){
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement(){
-    this.#element = null;
-  }
+  #editClickHandler = (event) => {
+    event.preventDefault();
+    this.#handleEditClick();
+  };
 }

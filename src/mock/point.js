@@ -1,5 +1,5 @@
 import {TYPES} from './const';
-import {getRandomInteger} from '../utils';
+import {getRandomInteger} from '../utils/common';
 
 
 const generateType = () => {
