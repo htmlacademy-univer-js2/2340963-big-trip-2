@@ -1,4 +1,4 @@
-import {render, RenderPosition} from './render';
+import {render, RenderPosition} from './framework/render';
 import Trip from './presenter/trip';
 import Filter from './view/filters';
 import PointModel from './model/point-model';

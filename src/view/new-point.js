@@ -1,5 +1,5 @@
-import {createElement} from '../render';
-import {humanizePointDate} from '../utils';
+import AbstractView from '../framework/view/abstract-view';
+import {humanizePointDate} from '../utils/point';
 import {generateOffersByType} from '../mock/offer';
 import {generateDestination} from '../mock/destination';
 
@@ -168,25 +168,13 @@ export const newPoint = (crNewPoint) => {
   `);
 };
 
-export default class NewPointView{
+export default class NewPointView extends AbstractView{
   constructor(crNewPoint) {
+    super();
     this.crNewPoint = crNewPoint;
   }
 
-  #element = null;
   get template(){
     return newPoint(this.crNewPoint);
-  }
-
-  get element(){
-    if(!this.#element){
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement(){
-    this.#element = null;
   }
 }

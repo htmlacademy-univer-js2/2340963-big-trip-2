@@ -1,4 +1,4 @@
-import {render, RenderPosition} from '../render';
+import {render, RenderPosition, replace} from '../framework/render';
 import TripList from '../view/trip-list';
 import Sorting from '../view/sorting';
 import PointView from '../view/point';
@@ -20,41 +20,37 @@ class Trip{
     this.#renderBoard();
   };
 
-  #renderPoint = (point) => {
-    const pointComponent = new PointView(point);
-    const editPointComponent = new EditingPointView(point);
-    const replacePointToEditPoint = () => {
-      this.#component.element.replaceChild(editPointComponent.element, pointComponent.element);
-    };
-
-    const replaceEditPointToPoint = () => {
-      this.#component.element.replaceChild(pointComponent.element, editPointComponent.element);
-    };
-
+  #renderPoint = (point, editPoint) => {
     const onEscKeyDown = (event) => {
       if(event.key === 'Escape' || event.key === 'Esc'){
         event.preventDefault();
-        replaceEditPointToPoint();
+        replaceEditPointToPoint.call(this);
         document.removeEventListener('keydown', onEscKeyDown);
       }
     };
 
-    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      replacePointToEditPoint();
-      document.addEventListener('keydown', onEscKeyDown);
+    const pointComponent = new PointView({
+      point,
+      onEditClick: () => {
+        replacePointToEditPoint.call(this);
+        document.addEventListener('keydown', onEscKeyDown);
+      }
     });
 
-    editPointComponent.element.querySelector('form').addEventListener('submit', (event) => {
-      event.preventDefault();
-      replaceEditPointToPoint();
-      document.removeEventListener('keydown', onEscKeyDown);
+    const editPointComponent = new EditingPointView({
+      editPoint,
+      onFormSubmit: () => {
+        replaceEditPointToPoint.call(this);
+        document.removeEventListener('keydown', onEscKeyDown);
+      }
     });
+    function replacePointToEditPoint() {
+      replace(editPointComponent, pointComponent);
+    }
 
-    editPointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', (event) => {
-      event.preventDefault();
-      replaceEditPointToPoint();
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
+    function replaceEditPointToPoint() {
+      replace(pointComponent, editPointComponent);
+    }
     render(pointComponent, this.#component.element);
   };
 
@@ -66,7 +62,7 @@ class Trip{
     render(new Sorting(), this.#container, RenderPosition.BEFOREEND);
     render(this.#component, this.#container);
     for (let i = 0; i < this.#tripPoints.length; i++) {
-      this.#renderPoint(this.#tripPoints[i]);
+      this.#renderPoint(this.#tripPoints[i], this.#tripPoints[0]);
     }
   };
 }
