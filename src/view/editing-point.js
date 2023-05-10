@@ -13,8 +13,8 @@ const BLANK_POINT = {
   offers: []
 };
 
-export const editingPoint = (editPoint) => {
-  const {type, destination, startDate, endDate, price, offers} = editPoint;
+export const editingPoint = (point) => {
+  const {type, destination, startDate, endDate, price, offers} = point;
   const dateFrom = startDate !== null ? humanizePointDate(startDate, 'DD/MM/YY HH:mm') : '';
   const dateTo = endDate !== null ? humanizePointDate(endDate, 'DD/MM/YY HH:mm') : '';
   const getDestination = destination !== 0 ? generateDestination.find((x) => x.id === destination) : '';
@@ -171,9 +171,9 @@ export default class EditingPointView extends AbstractView{
   #point = null;
   #handleFormSubmit = null;
   #handleEditClick = null;
-  constructor({editPoint = BLANK_POINT, onFormSubmit}){
+  constructor({point = BLANK_POINT, onFormSubmit}){
     super();
-    this.#point = editPoint;
+    this.#point = point;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleEditClick = onFormSubmit;
 
@@ -187,11 +187,11 @@ export default class EditingPointView extends AbstractView{
 
   #formSubmitHandler = (event) => {
     event.preventDefault();
-    this.#handleFormSubmit();
+    this.#handleFormSubmit(this.#point);
   };
 
   #editClickHandler = (event) => {
     event.preventDefault();
-    this.#handleEditClick();
+    this.#handleEditClick(this.#point);
   };
 }
