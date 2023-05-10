@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "babel-loader": "^8.2.3",
-    "dayjs": "^1.11.7"
+    "dayjs": "^1.11.7",
+    "nanoid": "^4.0.2"
   }
 }

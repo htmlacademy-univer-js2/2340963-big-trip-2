@@ -1,3 +1,4 @@
+import {nanoid} from 'nanoid';
 import {TYPES} from './const';
 import {getRandomInteger} from '../utils/common';
 
@@ -14,6 +15,7 @@ const generateFavorite = () => {
 };
 
 export const generatePoint = () => ({
+  id: nanoid(),
   type: generateType(),
   destination: getRandomInteger(1,2),
   startDate: `2019-07-10T${getRandomInteger(10, 23)}:${getRandomInteger(10, 59)}:00.845Z`,
