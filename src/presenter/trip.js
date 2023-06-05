@@ -1,17 +1,16 @@
 import {render, RenderPosition} from '../framework/render';
 import TripList from '../view/trip-list';
+import Sorting from '../view/sorting';
 import NoPointView from '../view/no-point';
 import PointPresenter from './point-presenter';
 import {sortPointsByType, updatePoint} from '../utils/common';
 import {SORTTYPE} from '../utils/common';
-import SortingView from '../view/sorting';
-// import {sortPointPrice, sortPointTime} from '../utils/point';
 
 class Trip{
   #container = null;
   #pointsModel = null;
   #component = new TripList();
-  #sortComponent = new SortingView();
+  #sortComponent = null;
   #noPoint = new NoPointView();
   #tripPoints = [];
   #pointPresenter = new Map();
@@ -38,33 +37,21 @@ class Trip{
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   };
 
-  // #sortPoints = (sortType) => {
-  //   switch (sortType) {
-  //     case sortType.TIME:
-  //       this.#tripPoints.sort(sortPointTime);
-  //       break;
-  //     case sortType.PRICE:
-  //       this.#tripPoints.sort(sortPointPrice);
-  //       break;
-  //     default:
-  //       this.#tripPoints = [...this.#sourcedTripPoints];
-  //   }
-  //   this.#currentSortType = sortType;
-  // };
-
   #handleSortTypeChange = (sortType) => {
     if(sortType === this.#currentSortType) {
       return;
     }
     sortPointsByType[sortType](this.#tripPoints);
-    // this.#sortPoints(sortType);
+    this.#currentSortType = sortType;
     this.#clearPointList();
     this.#renderPointList();
   };
 
   #renderSort() {
+    this.#sortComponent = new Sorting({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
     render(this.#sortComponent, this.#container, RenderPosition.AFTERBEGIN);
-    this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   }
 
   #renderPoint(point) {
@@ -99,7 +86,6 @@ class Trip{
   }
 
   #renderBoard() {
-    render(this.#component, this.#container);
     if(this.#tripPoints.length === 0) {
       this.#renderNoPoints();
       return;

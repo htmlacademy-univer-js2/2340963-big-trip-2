@@ -6,20 +6,7 @@ export const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-export const updatePoint = (points, updatedPoint) => {
-  const index = points.findIndex((item) => item.id === updatedPoint.id);
-
-  if (index === -1) {
-    return points;
-  }
-
-  return [
-    ...points.slice(0, index),
-    updatedPoint,
-    ...points.slice(index + 1),
-  ];
-};
-
+export const updatePoint = (points, update) => points.map((point) => point.id === update.id ? update : point);
 
 export const SORTTYPE = {
   DEFAULT: 'day',
