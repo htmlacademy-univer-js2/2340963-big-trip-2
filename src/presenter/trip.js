@@ -3,16 +3,19 @@ import TripList from '../view/trip-list';
 import Sorting from '../view/sorting';
 import NoPointView from '../view/no-point';
 import PointPresenter from './point-presenter';
-import {updatePoint} from '../utils/common';
+import {sortPointsByType, updatePoint} from '../utils/common';
+import {SORTTYPE} from '../utils/common';
 
 class Trip{
   #container = null;
   #pointsModel = null;
   #component = new TripList();
-  #sortComponent = new Sorting();
+  #sortComponent = null;
   #noPoint = new NoPointView();
   #tripPoints = [];
   #pointPresenter = new Map();
+  #currentSortType = SORTTYPE.DEFAULT;
+  #sourcedTripPoints = [];
   constructor({container, pointsModel}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
@@ -20,6 +23,7 @@ class Trip{
 
   init = () => {
     this.#tripPoints = [...this.#pointsModel.points];
+    this.#sourcedTripPoints = [...this.#pointsModel.points];
     this.#renderBoard();
   };
 
@@ -29,11 +33,25 @@ class Trip{
 
   #handlePointChange = (updatedPoint) => {
     this.#tripPoints = updatePoint(this.#tripPoints, updatedPoint);
+    this.#sourcedTripPoints = updatePoint(this.#sourcedTripPoints,updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   };
 
+  #handleSortTypeChange = (sortType) => {
+    if(sortType === this.#currentSortType) {
+      return;
+    }
+    sortPointsByType[sortType](this.#tripPoints);
+    this.#currentSortType = sortType;
+    this.#clearPointList();
+    this.#renderPointList();
+  };
+
   #renderSort() {
-    render(this.#sortComponent, this.#container, RenderPosition.BEFOREEND);
+    this.#sortComponent = new Sorting({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
+    render(this.#sortComponent, this.#container, RenderPosition.AFTERBEGIN);
   }
 
   #renderPoint(point) {
@@ -63,6 +81,7 @@ class Trip{
 
   #renderPointList() {
     render(this.#component, this.#container);
+    sortPointsByType[this.#currentSortType](this.#tripPoints);
     this.#renderPoints();
   }
 
