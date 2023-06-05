@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view';
-import {createDuration, humanizePointDate} from '../utils/point';
+import {calculateDuration, humanizePointDate} from '../utils/point';
 import {generateOffersByType} from '../mock/offer';
 import {generateDestination} from '../mock/destination';
 
@@ -11,23 +11,6 @@ export const Point = (point) => {
   const getDestination = destination !== 0 ? generateDestination.find((x) => x.id === destination) : '';
   const city = getDestination !== '' ? getDestination.city : '';
   const favoriteClass = isFavorite ? 'event__favorite-btn--active' : '';
-  const formattingDate = (diffDate) => diffDate < 10 ? `0${diffDate}` : `${diffDate}`;
-  const calculateDuration = () => {
-    const differenceDays = formattingDate(createDuration(startDate, endDate, 'day'));
-    const differenceHours = formattingDate(createDuration(startDate, endDate, 'hour') - differenceDays * 24);
-    const differenceMinutes = formattingDate(createDuration(startDate, endDate, 'minute') - differenceDays * 24 * 60 - differenceHours * 60 + 1);
-    if (startDate === null || endDate === null){
-      return '';
-    }
-    if (differenceDays !== '00') {
-      return `${differenceDays}D ${differenceHours}H ${differenceMinutes}M`;
-    }
-
-    if (differenceHours !== '00') {
-      return `${differenceHours}H ${differenceMinutes}M`;
-    }
-    return `${differenceMinutes}M`;
-  };
   const generateOffers = (offer) => {
     if (offers.find((x) => x === offer.id)) {
       return(`<li class="event__offer">
@@ -64,7 +47,7 @@ export const Point = (point) => {
               &mdash;
               <time class="event__end-time" dateTime="2019-03-18T11:00">${dateTo}</time>
             </p>
-            <p class="event__duration">${calculateDuration()}</p>
+            <p class="event__duration">${calculateDuration(startDate, endDate)}</p>
           </div>
           <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${price}</span>
