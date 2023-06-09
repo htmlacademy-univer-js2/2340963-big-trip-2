@@ -1,46 +1,31 @@
-import AbstractView from '../framework/view/abstract-view';
 import {calculateDuration, humanizePointDate} from '../utils/point';
-import {generateOffersByType} from '../mock/offer';
-import {generateDestination} from '../mock/destination';
+import AbstractView from '../framework/view/abstract-view';
 
-export const Point = (point) => {
-  const {type, destination, startDate, endDate, price, isFavorite, offers} = point;
+
+const createOffersTemplates = (allOffers, checkedOffers) => {
+  let result = '';
+  allOffers.forEach((offer) => {
+    if (checkedOffers.includes(offer.id)) {
+      result = `${result}<li class="event__offer"><span class="event__offer-title">${offer.title}</span>&plus;&euro;&nbsp;<span class="event__offer-price">${offer.price}</span></li>`;
+    }
+  });
+  return result;
+};
+
+export const Point = (point, destinations, offers) => {
+  const {type, destinationId, startDate, endDate, price, isFavorite, arrayOffersIds} = point;
   const dateFrom = startDate !== null ? humanizePointDate(startDate, 'DD/MM/YY HH:mm') : '';
   const dateTo = endDate !== null ? humanizePointDate(endDate, 'DD/MM/YY HH:mm') : '';
   const date = startDate !== null ? humanizePointDate(startDate, 'D MMMM') : '';
-  const getDestination = destination !== 0 ? generateDestination.find((x) => x.id === destination) : '';
-  const city = getDestination !== '' ? getDestination.city : '';
+  const allTypeOffers = offers.find((offer) => offer.type === type);
   const favoriteClass = isFavorite ? 'event__favorite-btn--active' : '';
-  const generateOffers = (offer) => {
-    if (offers.find((x) => x === offer.id)) {
-      return(`<li class="event__offer">
-              <span class="event__offer-title">${offer.title}</span>
-              &plus;&euro;&nbsp;
-              <span class="event__offer-price">${offer.price}</span>
-            </li>`);
-    } else {
-      return '';
-    }
-  };
-  const createOffersTemplates = () => {
-    if(offers.length !== 0) {
-      let offersTemplates = '';
-      const offersByType = generateOffersByType().find((x) => x.type === type);
-      for (let i = 0; i < offersByType.offers.length; i++) {
-        offersTemplates += generateOffers(offersByType.offers[i]);
-      }
-      return offersTemplates;
-    } else {
-      return '';
-    }
-  };
   return(`<li class="trip-events__item">
         <div class="event">
           <time class="event__date" dateTime="2019-03-18">${date}</time>
           <div class="event__type">
             <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
           </div>
-          <h3 class="event__title">${type} ${city}</h3>
+          <h3 class="event__title">${type} ${destinations[destinationId].city}</h3>
           <div class="event__schedule">
             <p class="event__time">
               <time class="event__start-time" dateTime="2019-03-18T10:30">${dateFrom}</time>
@@ -54,7 +39,7 @@ export const Point = (point) => {
           </p>
           <h4 class="visually-hidden">Offers:</h4>
           <ul class="event__selected-offers">
-          ${createOffersTemplates()}
+          ${createOffersTemplates(allTypeOffers.offers, arrayOffersIds)}
           </ul>
           <button class="event__favorite-btn ${favoriteClass}" type="button">
             <span class="visually-hidden">Add to favorite</span>
@@ -74,18 +59,22 @@ export default class PointView extends AbstractView{
   #point = null;
   #handleEditClick = null;
   #handleFavoriteClick = null;
-  constructor({point, onEditClick, onFavoriteClick}){
+  #destinations = null;
+  #offers = null;
+  constructor({point, onEditClick, onFavoriteClick, destinations, offers}){
     super();
     this.#point = point;
     this.#handleEditClick = onEditClick;
     this.#handleFavoriteClick = onFavoriteClick;
+    this.#destinations = destinations;
+    this.#offers = offers;
 
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
     this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteClickHandler);
   }
 
   get template(){
-    return Point(this.#point);
+    return Point(this.#point, this.#destinations, this.#offers);
   }
 
   #editClickHandler = (event) => {

@@ -15,14 +15,20 @@ export default class PointPresenter{
   #editPointComponent = null;
   #point = null;
   #mode = Mode.DEFAULT;
-  constructor({pointListContainer, onFavoriteChange, onModeChange}) {
+  #pointsModel = null;
+  #destinations = null;
+  #offers = null;
+  constructor({pointListContainer, pointsModel, onFavoriteChange, onModeChange}) {
     this.#pointListContainer = pointListContainer;
     this.#handleFavoriteChange = onFavoriteChange;
     this.#handleModeChange = onModeChange;
+    this.#pointsModel = pointsModel;
   }
 
   init = (point) => {
     this.#point = point;
+    this.#destinations = [...this.#pointsModel.destinations];
+    this.#offers = [...this.#pointsModel.offers];
 
     const prevPointComponent = this.#pointComponent;
     const prevEditPointComponent = this.#editPointComponent;
@@ -30,11 +36,15 @@ export default class PointPresenter{
     this.#pointComponent = new PointView({
       point: this.#point,
       onEditClick: this.#handleEditClick,
-      onFavoriteClick: this.#handleFavoriteClick
+      onFavoriteClick: this.#handleFavoriteClick,
+      destinations: this.#destinations,
+      offers: this.#offers
     });
     this.#editPointComponent = new EditingPointView({
       point: this.#point,
-      onFormSubmit: this.#handleSubmitForm
+      onFormSubmit: this.#handleSubmitForm,
+      destinations: this.#destinations,
+      offers: this.#offers
     });
 
     if (prevPointComponent === null || prevEditPointComponent === null){
@@ -61,6 +71,7 @@ export default class PointPresenter{
 
   resetView() {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#editPointComponent.reset(this.#point);
       this.#replaceEditPointToPoint();
     }
   }
@@ -68,6 +79,7 @@ export default class PointPresenter{
   #onEscKeyDown = (event) => {
     if(event.key === 'Escape' || event.key === 'Esc'){
       event.preventDefault();
+      this.#editPointComponent.reset(this.#point);
       this.#replaceEditPointToPoint();
     }
   };
@@ -95,6 +107,7 @@ export default class PointPresenter{
 
   #handleSubmitForm = (point) => {
     this.#handleFavoriteChange(point);
+    this.#editPointComponent.reset(this.#point);
     this.#replaceEditPointToPoint();
   };
 }

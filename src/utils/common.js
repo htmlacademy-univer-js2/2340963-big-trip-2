@@ -6,6 +6,9 @@ export const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
+export const getRandomItem = (items) => items[getRandomInteger(0, items.length - 1)];
+
+export const upperFirst = (str) => str[0].toUpperCase() + str.slice(1);
 export const updatePoint = (points, update) => points.map((point) => point.id === update.id ? update : point);
 
 export const SORTTYPE = {

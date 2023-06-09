@@ -58,7 +58,8 @@ class Trip{
     const pointPresenter = new PointPresenter({
       pointListContainer: this.#component.element,
       onFavoriteChange: this.#handlePointChange,
-      onModeChange: this.#handleModeChange
+      onModeChange: this.#handleModeChange,
+      pointsModel: this.#pointsModel
     });
     pointPresenter.init(point);
     this.#pointPresenter.set(point.id, pointPresenter);
