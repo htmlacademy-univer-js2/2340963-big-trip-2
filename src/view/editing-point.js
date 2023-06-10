@@ -2,6 +2,9 @@ import {humanizePointDate} from '../utils/point';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import {TYPES} from '../utils/const';
 import {upperFirst} from '../utils/common';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+import dayjs from 'dayjs';
 
 const BLANK_POINT = {
   type: '',
@@ -145,6 +148,7 @@ export default class EditingPointView extends AbstractStatefulView{
   #handleEditClick = null;
   #destinations = null;
   #offers = null;
+  #datepicker = null;
   constructor({point = BLANK_POINT, onFormSubmit, destinations, offers}){
     super();
     this.#point = point;
@@ -154,6 +158,14 @@ export default class EditingPointView extends AbstractStatefulView{
     this.#offers = offers;
     this._state = EditingPointView.parsePointToState(point);
     this._restoreHandlers();
+  }
+
+  removeElement() {
+    super.removeElement();
+    if(this.#datepicker) {
+      this.#datepicker.destroy();
+      this.#datepicker = null;
+    }
   }
 
   get template(){
@@ -178,6 +190,25 @@ export default class EditingPointView extends AbstractStatefulView{
     });
   };
 
+  #ChangeStartDateHandler = ([startDate]) => {
+    this.updateElement({
+      startDate: startDate
+    });
+  };
+
+  #ChangeEndDateHandler = ([endDate]) => {
+    this.updateElement({
+      endDate: endDate
+    });
+  };
+
+  #ChangePriceHandler = (event) => {
+    event.preventDefault();
+    this.updateElement({
+      price: event.target.value
+    });
+  };
+
   #changeDestinationHandler = (event) => {
     event.preventDefault();
     const destination = this.#destinations.filter((dest) => dest.city === event.target.value);
@@ -198,7 +229,41 @@ export default class EditingPointView extends AbstractStatefulView{
     });
   };
 
-  static parsePointToState = (point) => ({...point});
+  #setStartDatepicker() {
+    if (this._state.startDate) {
+      this.#datepicker = flatpickr(
+        this.element.querySelector('#event-start-time-1'),
+        {
+          enableTime: true,
+          dateFormat: 'd/m/y H:i',
+          defaultDate: this._state.startDate,
+          maxDate: this._state.endDate,
+          onChange: this.#ChangeStartDateHandler,
+        },
+      );
+    }
+  }
+
+  #setEndDatepicker() {
+    if (this._state.endDate) {
+      this.#datepicker = flatpickr(
+        this.element.querySelector('#event-end-time-1'),
+        {
+          enableTime: true,
+          dateFormat: 'd/m/y H:i',
+          defaultDate: this._state.endDate,
+          minDate: this._state.startDate,
+          onChange: this.#ChangeEndDateHandler,
+        },
+      );
+    }
+  }
+
+  static parsePointToState = (point) => ({
+    ...point,
+    startDate: dayjs(point.startDate).toDate(),
+    endDate: dayjs(point.endDate).toDate()
+  });
 
   static parseStateToPoint = (state) => ({...state});
 
@@ -214,5 +279,8 @@ export default class EditingPointView extends AbstractStatefulView{
     this.element.querySelector('.event__type-list').addEventListener('change', this.#changeTypeHandler);
     this.element.querySelector('.event__available-offers').addEventListener('change', this.#changeOfferHandler);
     this.element.querySelector('.event__input').addEventListener('change', this.#changeDestinationHandler);
+    this.element.querySelector('.event__input--price').addEventListener('change', this.#ChangePriceHandler);
+    this.#setStartDatepicker();
+    this.#setEndDatepicker();
   }
 }
