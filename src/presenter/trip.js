@@ -5,6 +5,7 @@ import NoPointView from '../view/no-point';
 import PointPresenter from './point-presenter';
 import {sortPointsByType, updatePoint} from '../utils/common';
 import {SORTTYPE} from '../utils/common';
+import {FILTERTYPE} from '../utils/filter';
 
 class Trip{
   #container = null;
@@ -15,6 +16,7 @@ class Trip{
   #tripPoints = [];
   #pointPresenter = new Map();
   #currentSortType = SORTTYPE.DEFAULT;
+  #filterType = FILTERTYPE.EVERYTHING;
   #sourcedTripPoints = [];
   constructor({container, pointsModel}) {
     this.#container = container;
