@@ -1,4 +1,4 @@
-import {TYPES} from '../utils/const';
+import {TYPES} from '../const';
 import {getRandomInteger} from '../utils/common';
 
 const generateOffer = (id, pointType) => ({

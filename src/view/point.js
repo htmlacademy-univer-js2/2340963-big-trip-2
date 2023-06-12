@@ -12,12 +12,12 @@ const createOffersTemplates = (allOffers, checkedOffers) => {
   return result;
 };
 
-export const Point = (point, destinations, offers) => {
-  const {type, destinationId, startDate, endDate, price, isFavorite, arrayOffersIds} = point;
+export const Point = (point, destinations, arrayOffersIds) => {
+  const {type, destination, startDate, endDate, price, isFavorite, offers} = point;
   const dateFrom = startDate !== null ? humanizePointDate(startDate, 'DD/MM/YY HH:mm') : '';
   const dateTo = endDate !== null ? humanizePointDate(endDate, 'DD/MM/YY HH:mm') : '';
   const date = startDate !== null ? humanizePointDate(startDate, 'D MMMM') : '';
-  const allTypeOffers = offers.find((offer) => offer.type === type);
+  const allTypeOffers = arrayOffersIds.find((offer) => offer.type === type);
   const favoriteClass = isFavorite ? 'event__favorite-btn--active' : '';
   return(`<li class="trip-events__item">
         <div class="event">
@@ -25,7 +25,7 @@ export const Point = (point, destinations, offers) => {
           <div class="event__type">
             <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
           </div>
-          <h3 class="event__title">${type} ${destinations[destinationId].city}</h3>
+          <h3 class="event__title">${type} ${destinations[destination].name}</h3>
           <div class="event__schedule">
             <p class="event__time">
               <time class="event__start-time" dateTime="2019-03-18T10:30">${dateFrom}</time>
@@ -39,7 +39,7 @@ export const Point = (point, destinations, offers) => {
           </p>
           <h4 class="visually-hidden">Offers:</h4>
           <ul class="event__selected-offers">
-          ${createOffersTemplates(allTypeOffers.offers, arrayOffersIds)}
+          ${createOffersTemplates(allTypeOffers.offers, offers)}
           </ul>
           <button class="event__favorite-btn ${favoriteClass}" type="button">
             <span class="visually-hidden">Add to favorite</span>

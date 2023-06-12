@@ -32,3 +32,8 @@ export const UpdateType = {
   MINOR: 'MINOR',
   MAJOR: 'MAJOR'
 };
+
+export const ApiServiceMethod = {
+  GET: 'GET',
+  PUT: 'PUT',
+};

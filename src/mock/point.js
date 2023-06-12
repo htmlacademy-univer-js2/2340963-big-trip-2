@@ -15,12 +15,12 @@ export const generatePoint = () => {
   const allOfferIdsByTypePoint = offersByTypePoint.offers.map((offer) => offer.id);
   return {
     id: nanoid(),
-    destinationId: getRandomItem(destinations).id,
+    destination: getRandomItem(destinations).id,
     startDate: `2019-07-10T${getRandomInteger(10, 23)}:${getRandomInteger(10, 59)}:00.845Z`,
     endDate: `2019-07-11T${getRandomInteger(10, 23)}:${getRandomInteger(10, 59)}:00.375Z`,
     price: getRandomInteger(200,1000),
     isFavorite: generateFavorite(),
-    arrayOffersIds: Array.from({length: getRandomInteger(0, allOfferIdsByTypePoint.length)}).map(() =>
+    offers: Array.from({length: getRandomInteger(0, allOfferIdsByTypePoint.length)}).map(() =>
       allOfferIdsByTypePoint[getRandomInteger(0, allOfferIdsByTypePoint.length - 1)]),
     type: offersByTypePoint.type
   };

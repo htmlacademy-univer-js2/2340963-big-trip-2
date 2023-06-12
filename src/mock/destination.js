@@ -1,5 +1,5 @@
 import {getRandomInteger} from '../utils/common';
-import {DESTINATION_CITIES, DESTINATION_DESCRIPTIONS} from '../utils/const';
+import {DESTINATION_CITIES, DESTINATION_DESCRIPTIONS} from '../const';
 
 const generateDescription = () => {
   let description = '';
@@ -7,24 +7,24 @@ const generateDescription = () => {
   return description;
 };
 
-const getPhotos = () => {
-  const destPhotos = [];
+const getPictures = () => {
+  const destPictures = [];
   for(let i = 1; i < getRandomInteger(2,4); i++){
-    destPhotos.push({
+    destPictures.push({
       src: `img/photos/${getRandomInteger(1,5)}.jpg`,
       description: generateDescription()
     });
   }
-  return destPhotos;
+  return destPictures;
 };
 
 const generateDestination = (id) => ({
   id,
   description: generateDescription(),
-  city: DESTINATION_CITIES[id],
-  photos: getPhotos()
+  name: DESTINATION_CITIES[id],
+  pictures: getPictures()
 });
 
-export const getDestinations = () => Array.from({length: DESTINATION_CITIES.length}).map((city, id) => generateDestination(id));
+export const getDestinations = () => Array.from({length: DESTINATION_CITIES.length}).map((name, id) => generateDestination(id));
 
 export const destinations = getDestinations();

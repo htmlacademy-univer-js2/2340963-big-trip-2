@@ -1,7 +1,7 @@
 import PointView from '../view/point';
 import EditingPointView from '../view/editing-point';
 import {remove, render, replace} from '../framework/render';
-import {UpdateType, UserAction} from '../utils/const';
+import {UpdateType, UserAction} from '../const';
 
 const Mode = {
   DEFAULT: 'DEFAULT',

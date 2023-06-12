@@ -6,10 +6,9 @@ import PointPresenter from './point-presenter';
 import {sortPointsByType} from '../utils/common';
 import {SORTTYPE} from '../utils/common';
 import {filterByType, FILTERTYPE} from '../utils/filter';
-import {UpdateType, UserAction} from '../utils/const';
+import {UpdateType, UserAction} from '../const';
 import NewPointPresenter from './new-point-presenter';
 
-const POINT_COUNT_PER_STEP = 7;
 class Trip{
   #container = null;
   #pointsModel = null;
@@ -23,7 +22,6 @@ class Trip{
   #newPointPresenter = null;
   #currentSortType = SORTTYPE.DEFAULT;
   #filterType = FILTERTYPE.EVERYTHING;
-  #renderedPointCount = POINT_COUNT_PER_STEP;
   constructor({container, pointsModel, destinationsModel, offersModel, filtersModel, onNewPointDestroy}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
