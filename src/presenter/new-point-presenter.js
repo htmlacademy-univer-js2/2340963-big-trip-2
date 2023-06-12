@@ -1,6 +1,6 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
 import {nanoid} from 'nanoid';
-import {UpdateType, UserAction} from '../utils/const';
+import {UpdateType, UserAction} from '../const';
 import EditingPointView from '../view/editing-point';
 
 export default class NewPointPresenter {
