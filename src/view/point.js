@@ -19,13 +19,14 @@ export const Point = (point, destinations, arrayOffersIds) => {
   const date = startDate !== null ? humanizePointDate(startDate, 'D MMMM') : '';
   const allTypeOffers = arrayOffersIds.find((offer) => offer.type === type);
   const favoriteClass = isFavorite ? 'event__favorite-btn--active' : '';
+  const destinationInf = destinations.find((dest) => dest.id === destination);
   return(`<li class="trip-events__item">
         <div class="event">
           <time class="event__date" dateTime="2019-03-18">${date}</time>
           <div class="event__type">
             <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
           </div>
-          <h3 class="event__title">${type} ${destinations[destination].name}</h3>
+          <h3 class="event__title">${type} ${destinationInf.name}</h3>
           <div class="event__schedule">
             <p class="event__time">
               <time class="event__start-time" dateTime="2019-03-18T10:30">${dateFrom}</time>

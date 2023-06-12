@@ -70,6 +70,7 @@ export const editingPoint = (point, destinations, arrayOffersIds, isNewPoint) =>
   const dateFrom = startDate !== null ? humanizePointDate(startDate, 'DD/MM/YY HH:mm') : '';
   const dateTo = endDate !== null ? humanizePointDate(endDate, 'DD/MM/YY HH:mm') : '';
   const allTypeOffers = arrayOffersIds.find((offer) => offer.type === type);
+  const destinationInf = destinations.find((dest) => dest.id === destination);
   return(`<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
@@ -92,7 +93,7 @@ export const editingPoint = (point, destinations, arrayOffersIds, isNewPoint) =>
                     <label class="event__label  event__type-output" for="event-destination-${destination}">
                       ${type}
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-${destination}" type="text" name="event-destination" value="${he.encode(destinations[destination].name)}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-${destination}" type="text" name="event-destination" value="${he.encode(destinationInf.name)}" list="destination-list-1">
                     <datalist id="destination-list-1">
                      ${generateDestinations(destinations)}
                     </datalist>
@@ -132,10 +133,10 @@ export const editingPoint = (point, destinations, arrayOffersIds, isNewPoint) =>
 
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                    <p class="event__destination-description">${destinations[destination].description}</p>
+                    <p class="event__destination-description">${destinationInf.description}</p>
                      <div class="event__photos-container">
                      <div class="event__photos-tape">
-                     ${createPhotosTemplates(destinations[destination].pictures)}
+                     ${createPhotosTemplates(destinationInf.pictures)}
                     </div>
                     </div>
                   </section>
@@ -216,15 +217,15 @@ export default class EditingPointView extends AbstractStatefulView{
   #ChangePriceHandler = (event) => {
     event.preventDefault();
     this.updateElement({
-      price: event.target.value
+      price: Number(event.target.value)
     });
   };
 
   #changeDestinationHandler = (event) => {
     event.preventDefault();
-    const destination = this.#destinations.filter((dest) => dest.name === event.target.value);
+    const destination = this.#destinations.find((dest) => dest.name === event.target.value);
     this.updateElement({
-      destination: destination[0].id,
+      destination: destination.id,
     });
   };
 

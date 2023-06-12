@@ -53,10 +53,15 @@ function handleNewPointButtonClick() {
   newPointButtonComponent.element.disabled = true;
 }
 
-render(newPointButtonComponent, headerContainer);
-
 const headerPresenter = new Header(headerContainer, pointsModel.points, destinationsModel.destinations);
 headerPresenter.init();
 filterPresenter.init();
 tripPresenter.init();
+offersModel.init().finally(() => {
+  destinationsModel.init().finally(() => {
+    pointsModel.init().finally(() => {
+      render(newPointButtonComponent, headerContainer);
+    });
+  });
+});
 

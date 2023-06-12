@@ -8,6 +8,7 @@ import {SORTTYPE} from '../utils/common';
 import {filterByType, FILTERTYPE} from '../utils/filter';
 import {UpdateType, UserAction} from '../const';
 import NewPointPresenter from './new-point-presenter';
+import LoadingView from '../view/loading';
 
 class Trip{
   #container = null;
@@ -17,11 +18,13 @@ class Trip{
   #filtersModel = null;
   #component = new TripList();
   #sortComponent = null;
+  #loadingComponent = new LoadingView();
   #noPoint = null;
   #pointPresenter = new Map();
   #newPointPresenter = null;
   #currentSortType = SORTTYPE.DEFAULT;
   #filterType = FILTERTYPE.EVERYTHING;
+  #isLoading = true;
   constructor({container, pointsModel, destinationsModel, offersModel, filtersModel, onNewPointDestroy}) {
     this.#container = container;
     this.#pointsModel = pointsModel;
@@ -98,6 +101,11 @@ class Trip{
         this.#clearBoard({resetSortType: true});
         this.#renderBoard();
         break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderBoard();
+        break;
     }
   };
 
@@ -124,6 +132,7 @@ class Trip{
     this.#pointPresenter.clear();
 
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
 
     if (this.#noPoint) {
       remove(this.#noPoint);
@@ -151,6 +160,10 @@ class Trip{
     points.forEach((point) => this.#renderPoint(point));
   }
 
+  #renderLoading(){
+    render(this.#loadingComponent, this.#container, RenderPosition.AFTERBEGIN);
+  }
+
   #renderNoPoints() {
     this.#noPoint = new NoPointView({
       filterType: this.#filterType
@@ -161,8 +174,12 @@ class Trip{
   #renderBoard() {
     const points = this.points;
     const pointsCount = points.length;
-    if(pointsCount === 0) {
+    if(pointsCount === 0 && !this.#isLoading) {
       this.#renderNoPoints();
+      return;
+    }
+    if(this.#isLoading) {
+      this.#renderLoading();
       return;
     }
     this.#renderSort();
