@@ -10,6 +10,8 @@ import {TimeLimit, UpdateType, UserAction} from '../const';
 import NewPointPresenter from './new-point-presenter';
 import LoadingView from '../view/loading';
 import UiBlocker from '../framework/ui-blocker/ui-blocker';
+import TripInfoView from '../view/trip-info';
+import MenuView from '../view/menu';
 
 class Trip{
   #container = null;
@@ -20,11 +22,15 @@ class Trip{
   #component = new TripList();
   #sortComponent = null;
   #loadingComponent = new LoadingView();
+  #tripInfoComponent = null;
+  #menuComponent = new MenuView();
   #noPoint = null;
   #pointPresenter = new Map();
   #newPointPresenter = null;
   #currentSortType = SORTTYPE.DEFAULT;
   #filterType = FILTERTYPE.EVERYTHING;
+  #headerContainer = document.querySelector('.trip-main');
+  #menuContainer = this.#headerContainer.querySelector('.trip-controls__navigation');
   #isLoading = true;
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
@@ -154,6 +160,7 @@ class Trip{
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
 
+    remove(this.#tripInfoComponent);
     remove(this.#sortComponent);
     remove(this.#loadingComponent);
 
@@ -171,7 +178,6 @@ class Trip{
       pointListContainer: this.#component.element,
       onFavoriteChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange,
-      pointsModel: this.#pointsModel,
       destinationsModel: this.#destinationsModel,
       offersModel: this.#offersModel
     });
@@ -194,6 +200,20 @@ class Trip{
     render(this.#noPoint, this.#container, RenderPosition.AFTERBEGIN);
   }
 
+  #renderTripInfo() {
+    const points = this.points;
+    this.#tripInfoComponent = new TripInfoView({
+      points: points,
+      destinations: [...this.#destinationsModel.destinations],
+      offers: [...this.#offersModel.offers]
+    });
+    render(this.#tripInfoComponent, this.#headerContainer, RenderPosition.AFTERBEGIN);
+  }
+
+  #renderMenu() {
+    render(this.#menuComponent, this.#menuContainer);
+  }
+
   #renderBoard() {
     const points = this.points;
     const pointsCount = points.length;
@@ -205,6 +225,10 @@ class Trip{
       this.#renderLoading();
       return;
     }
+    if (this.#filterType === FILTERTYPE.EVERYTHING) {
+      this.#renderTripInfo();
+    }
+    this.#renderMenu();
     this.#renderSort();
     render(this.#component, this.#container);
     this.#renderPoints(points);

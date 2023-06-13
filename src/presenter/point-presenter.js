@@ -16,16 +16,14 @@ export default class PointPresenter{
   #editPointComponent = null;
   #point = null;
   #mode = Mode.DEFAULT;
-  #pointsModel = null;
   #destinationsModel = null;
   #offersModel = null;
   #destinations = null;
   #offers = null;
-  constructor({pointListContainer, pointsModel, destinationsModel, offersModel, onFavoriteChange, onModeChange}) {
+  constructor({pointListContainer, destinationsModel, offersModel, onFavoriteChange, onModeChange}) {
     this.#pointListContainer = pointListContainer;
     this.#handleFavoriteChange = onFavoriteChange;
     this.#handleModeChange = onModeChange;
-    this.#pointsModel = pointsModel;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
   }

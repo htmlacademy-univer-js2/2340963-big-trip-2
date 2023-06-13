@@ -1,6 +1,5 @@
 import Trip from './presenter/trip';
 import PointModel from './model/point-model';
-import Header from './presenter/header';
 import DestinationModel from './model/destination-model';
 import OfferModel from './model/offer-model';
 import FilterModel from './model/filter-model';
@@ -53,8 +52,6 @@ function handleNewPointButtonClick() {
   newPointButtonComponent.element.disabled = true;
 }
 
-const headerPresenter = new Header(headerContainer, pointsModel.points, destinationsModel.destinations);
-headerPresenter.init();
 filterPresenter.init();
 tripPresenter.init();
 offersModel.init().finally(() => {
