@@ -1,6 +1,5 @@
-import Trip from './presenter/trip';
+import TripPresenter from './presenter/trip-presenter';
 import PointModel from './model/point-model';
-import Header from './presenter/header';
 import DestinationModel from './model/destination-model';
 import OfferModel from './model/offer-model';
 import FilterModel from './model/filter-model';
@@ -10,9 +9,8 @@ import {render} from './framework/render';
 import PointsApiService from './api-service/points-api-service';
 import DestinationsApiService from './api-service/destinations-api-service';
 import OffersApiService from './api-service/offers-api-service';
+import {AUTHORIZATION, END_POINT} from './const';
 
-const AUTHORIZATION = 'Basic pkhS2sfY44wtl1se';
-const END_POINT = 'https://18.ecmascript.pages.academy/big-trip';
 
 const tripContainer = document.querySelector('.trip-events');
 const headerContainer = document.querySelector('.trip-main');
@@ -26,7 +24,7 @@ const offersModel = new OfferModel({
   offersApiService: new OffersApiService(END_POINT, AUTHORIZATION)
 });
 const filtersModel = new FilterModel();
-const tripPresenter = new Trip({
+const tripPresenter = new TripPresenter({
   container: tripContainer,
   pointsModel: pointsModel,
   destinationsModel: destinationsModel,
@@ -53,8 +51,6 @@ function handleNewPointButtonClick() {
   newPointButtonComponent.element.disabled = true;
 }
 
-const headerPresenter = new Header(headerContainer, pointsModel.points, destinationsModel.destinations);
-headerPresenter.init();
 filterPresenter.init();
 tripPresenter.init();
 offersModel.init().finally(() => {

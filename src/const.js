@@ -1,4 +1,9 @@
-export const TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+export const types = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+
+export const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING'
+};
 
 export const UserAction = {
   UPDATE_POINT: 'UPDATE_POINT',
@@ -25,3 +30,5 @@ export const TimeLimit = {
   UPPER_LIMIT: 1000,
 };
 
+export const AUTHORIZATION = 'Basic pkhS2sfY44wtl1se';
+export const END_POINT = 'https://18.ecmascript.pages.academy/big-trip';

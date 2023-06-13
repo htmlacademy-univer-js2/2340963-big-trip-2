@@ -1,6 +1,6 @@
 import {humanizePointDate} from '../utils/point';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
-import {TYPES} from '../const';
+import {types} from '../const';
 import {upperFirst} from '../utils/common';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import he from 'he';
 
 const BLANK_POINT = {
-  type: TYPES[0],
+  type: types[0],
   destination: 1,
   startDate: dayjs(),
   endDate: dayjs(),
@@ -48,7 +48,7 @@ const createOffersTemplates = (allOffers, checkedOffers, isDisabled) => {
 
 const createTypesTemplates = (currentType, isDisabled) => {
   let typesTemplates = '';
-  TYPES.map((type) => {
+  types.map((type) => {
     const checked = currentType === type ? 'checked' : '';
     typesTemplates += `<div class="event__type-item">
     <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type"
@@ -59,20 +59,20 @@ const createTypesTemplates = (currentType, isDisabled) => {
   return typesTemplates;
 };
 
-const createPhotosTemplates = (destPhotos) => {
+const createPhotosTemplates = (destinationPhotos) => {
   let photosTemplates = '';
-  if (destPhotos !== ''){
-    photosTemplates = destPhotos.map((photo) => (`<img class="event__photo" src="${photo.src}" alt="${photo.description}">`)).join('');
+  if (destinationPhotos !== ''){
+    photosTemplates = destinationPhotos.map((photo) => (`<img class="event__photo" src="${photo.src}" alt="${photo.description}">`)).join('');
   }
   return photosTemplates;
 };
 
-export const editingPoint = (point, destinations, arrayOffersIds, isNewPoint) => {
+export const editingPoint = (point, destinations, offersIds, isNewPoint) => {
   const {type, destination, startDate, endDate, price, offers, isSaving, isDeleting, isDisabled} = point;
   const dateFrom = startDate !== null ? humanizePointDate(startDate, 'DD/MM/YY HH:mm') : '';
   const dateTo = endDate !== null ? humanizePointDate(endDate, 'DD/MM/YY HH:mm') : '';
-  const allTypeOffers = arrayOffersIds.find((offer) => offer.type === type);
-  const destinationInf = destinations.find((dest) => dest.id === destination);
+  const allTypeOffers = offersIds.find((offer) => offer.type === type);
+  const destinationData = destinations.find((dest) => dest.id === destination);
   return(`<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
@@ -96,7 +96,7 @@ export const editingPoint = (point, destinations, arrayOffersIds, isNewPoint) =>
                       ${type}
                     </label>
                     <input class="event__input  event__input--destination" id="event-destination-${destination}"
-                    type="text" name="event-destination" value="${he.encode(destinationInf.name)}"
+                    type="text" name="event-destination" value="${he.encode(destinationData.name)}"
                     list="destination-list-1" ${isDisabled ? 'disabled' : ''}>
                     <datalist id="destination-list-1" ${isDisabled ? 'disabled' : ''}>
                      ${generateDestinations(destinations, isDisabled)}
@@ -140,10 +140,10 @@ export const editingPoint = (point, destinations, arrayOffersIds, isNewPoint) =>
 
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                    <p class="event__destination-description">${destinationInf.description}</p>
+                    <p class="event__destination-description">${destinationData.description}</p>
                      <div class="event__photos-container">
                      <div class="event__photos-tape">
-                     ${createPhotosTemplates(destinationInf.pictures)}
+                     ${createPhotosTemplates(destinationData.pictures)}
                     </div>
                     </div>
                   </section>
