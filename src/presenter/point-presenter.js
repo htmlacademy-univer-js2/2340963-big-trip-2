@@ -1,12 +1,7 @@
 import PointView from '../view/point';
 import EditingPointView from '../view/editing-point';
 import {remove, render, replace} from '../framework/render';
-import {UpdateType, UserAction} from '../const';
-
-const Mode = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING'
-};
+import {Mode, UpdateType, UserAction} from '../const';
 
 export default class PointPresenter{
   #pointListContainer = null;
@@ -33,8 +28,8 @@ export default class PointPresenter{
     this.#destinations = [...this.#destinationsModel.destinations];
     this.#offers = [...this.#offersModel.offers];
 
-    const prevPointComponent = this.#pointComponent;
-    const prevEditPointComponent = this.#editPointComponent;
+    const previousPointComponent = this.#pointComponent;
+    const previousEditPointComponent = this.#editPointComponent;
 
     this.#pointComponent = new PointView({
       point: this.#point,
@@ -51,22 +46,22 @@ export default class PointPresenter{
       offers: this.#offers
     });
 
-    if (prevPointComponent === null || prevEditPointComponent === null){
+    if (previousPointComponent === null || previousEditPointComponent === null){
       render(this.#pointComponent, this.#pointListContainer);
       return;
     }
 
     if (this.#mode === Mode.DEFAULT){
-      replace(this.#pointComponent, prevPointComponent);
+      replace(this.#pointComponent, previousPointComponent);
     }
 
     if (this.#mode === Mode.EDITING){
-      replace(this.#pointComponent, prevEditPointComponent);
+      replace(this.#pointComponent, previousEditPointComponent);
       this.#mode = Mode.DEFAULT;
     }
 
-    remove(prevPointComponent);
-    remove(prevEditPointComponent);
+    remove(previousPointComponent);
+    remove(previousEditPointComponent);
   };
 
   destroy() {
@@ -108,7 +103,7 @@ export default class PointPresenter{
       this.#editPointComponent.updateElement({
         isDisabled: false,
         isSaving: false,
-        isDeleting: false,
+        isDeleting: false
       });
     };
     this.#editPointComponent.shake(resetFormState);
@@ -151,14 +146,14 @@ export default class PointPresenter{
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
       update);
-    this.#editPointComponent.reset(this.#point);
+    this.#editPointComponent.reset(update);
   };
 
   #handleDeleteClick = (point) => {
     this.#handleFavoriteChange(
       UserAction.DELETE_POINT,
       UpdateType.MINOR,
-      point,
+      point
     );
   };
 }

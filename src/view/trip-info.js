@@ -4,19 +4,19 @@ import {humanizePointDate} from '../utils/point';
 
 const getTotalAmount = (points, offers) => {
   let sum = 0;
-  let sumOffersCurrPoint = 0;
+  let sumOffersPriceCurrentPoint = 0;
   let checkedOffers = [];
-  let offersByType;
+  let offersByType = null;
   points.forEach((point) => {
-    sumOffersCurrPoint = 0;
+    sumOffersPriceCurrentPoint = 0;
     checkedOffers = point.offers;
     offersByType = offers.find((offer) => offer.type === point.type);
     if (checkedOffers.length !== 0){
       checkedOffers.forEach((checked) => {
-        sumOffersCurrPoint += offersByType.offers.find((offer) => offer.id === checked).price;
+        sumOffersPriceCurrentPoint += offersByType.offers.find((offer) => offer.id === checked).price;
       });
     }
-    sum += point.price + sumOffersCurrPoint;
+    sum += point.price + sumOffersPriceCurrentPoint;
   });
   return sum;
 };

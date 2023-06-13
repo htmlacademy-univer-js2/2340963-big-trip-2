@@ -4,8 +4,8 @@ import Sorting from '../view/sorting';
 import NoPointView from '../view/no-point';
 import PointPresenter from './point-presenter';
 import {sortPointsByType} from '../utils/common';
-import {SORTTYPE} from '../utils/common';
-import {filterByType, FILTERTYPE} from '../utils/filter';
+import {SortType} from '../utils/common';
+import {filterByType, FilterType} from '../utils/filter';
 import {TimeLimit, UpdateType, UserAction} from '../const';
 import NewPointPresenter from './new-point-presenter';
 import LoadingView from '../view/loading';
@@ -13,7 +13,7 @@ import UiBlocker from '../framework/ui-blocker/ui-blocker';
 import TripInfoView from '../view/trip-info';
 import MenuView from '../view/menu';
 
-class Trip{
+class TripPresenter {
   #container = null;
   #pointsModel = null;
   #destinationsModel = null;
@@ -27,8 +27,8 @@ class Trip{
   #noPoint = null;
   #pointPresenter = new Map();
   #newPointPresenter = null;
-  #currentSortType = SORTTYPE.DEFAULT;
-  #filterType = FILTERTYPE.EVERYTHING;
+  #currentSortType = SortType.DEFAULT;
+  #filterType = FilterType.EVERYTHING;
   #headerContainer = document.querySelector('.trip-main');
   #menuContainer = this.#headerContainer.querySelector('.trip-controls__navigation');
   #isLoading = true;
@@ -76,8 +76,8 @@ class Trip{
   }
 
   createPoint() {
-    this.#currentSortType = SORTTYPE.DEFAULT;
-    this.#filtersModel.setFilter(UpdateType.MAJOR, FILTERTYPE.EVERYTHING);
+    this.#currentSortType = SortType.DEFAULT;
+    this.#filtersModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#newPointPresenter.init();
   }
 
@@ -168,7 +168,7 @@ class Trip{
       remove(this.#noPoint);
     }
     if (resetSortType) {
-      this.#currentSortType = SORTTYPE.DEFAULT;
+      this.#currentSortType = SortType.DEFAULT;
     }
   }
 
@@ -225,7 +225,7 @@ class Trip{
       this.#renderLoading();
       return;
     }
-    if (this.#filterType === FILTERTYPE.EVERYTHING) {
+    if (this.#filterType === FilterType.EVERYTHING) {
       this.#renderTripInfo();
     }
     this.#renderMenu();
@@ -235,4 +235,4 @@ class Trip{
   }
 }
 
-export default Trip;
+export default TripPresenter;
