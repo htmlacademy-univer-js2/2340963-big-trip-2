@@ -22,7 +22,7 @@
     "copy-webpack-plugin": "11.0.0",
     "css-loader": "6.7.3",
     "eslint": "8.38.0",
-    "eslint-config-htmlacademy": "^9.0.0",
+    "eslint-config-htmlacademy": "9.0.0",
     "style-loader": "3.3.2",
     "webpack": "5.62.1",
     "webpack-cli": "4.10.0",
