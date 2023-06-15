@@ -1,5 +1,6 @@
 import AbstractView from '../framework/view/abstract-view';
-import {SortType} from '../utils/common';
+import {SortType} from '../const';
+
 
 const sorting = (currentSortType) => (
   `

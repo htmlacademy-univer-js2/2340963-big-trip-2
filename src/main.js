@@ -11,7 +11,6 @@ import DestinationsApiService from './api-service/destinations-api-service';
 import OffersApiService from './api-service/offers-api-service';
 import {AUTHORIZATION, END_POINT} from './const';
 
-
 const tripContainer = document.querySelector('.trip-events');
 const headerContainer = document.querySelector('.trip-main');
 const pointsModel = new PointModel({

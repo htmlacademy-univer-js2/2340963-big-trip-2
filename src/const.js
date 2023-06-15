@@ -1,4 +1,22 @@
-export const types = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+export const TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+
+export const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PAST: 'past'
+};
+
+export const SortType = {
+  DEFAULT: 'day',
+  TIME: 'time-descending',
+  PRICE: 'price-descending'
+};
+
+export const NoPointsTextType = {
+  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
+  [FilterType.PAST]: 'There are no past events now',
+  [FilterType.FUTURE]: 'There are no future events now'
+};
 
 export const Mode = {
   DEFAULT: 'DEFAULT',

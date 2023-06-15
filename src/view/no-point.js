@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view';
-import {NoPointsTextType} from '../utils/filter';
+import {NoPointsTextType} from '../const';
 
 export const createNoPoint = (filterType) => {
   const noPointTextValue = NoPointsTextType[filterType];
