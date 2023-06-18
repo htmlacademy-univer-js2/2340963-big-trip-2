@@ -2,14 +2,14 @@ import dayjs from 'dayjs';
 
 export const humanizePointDate = (date, form) => dayjs(date).format(form);
 
-const createDuration = (startDate, endDate, param) => dayjs(endDate).diff(startDate, param);
+const createDuration = (startDate, endDate, param) => dayjs(humanizePointDate(endDate, 'YYYY-MM-DDTHH:mm')).diff(humanizePointDate(startDate, 'YYYY-MM-DDTHH:mm'), param);
 
 const formattingDate = (diffDate) => diffDate < 10 ? `0${diffDate}` : `${diffDate}`;
 
 export const calculateDuration = (startDate, endDate) => {
   const differenceDays = formattingDate(createDuration(startDate, endDate, 'day'));
   const differenceHours = formattingDate(createDuration(startDate, endDate, 'hour') - differenceDays * 24);
-  const differenceMinutes = formattingDate(createDuration(startDate, endDate, 'minute') - differenceDays * 24 * 60 - differenceHours * 60 + 1);
+  const differenceMinutes = formattingDate(createDuration(startDate, endDate, 'minute') - differenceDays * 24 * 60 - differenceHours * 60);
   if (startDate === null || endDate === null){
     return null;
   }

@@ -4,7 +4,7 @@ import DestinationModel from './model/destination-model';
 import OfferModel from './model/offer-model';
 import FilterModel from './model/filter-model';
 import FilterPresenter from './presenter/filter-presenter';
-import NewPointButtonView from './view/new-point-button';
+import NewPointButtonView from './view/new-point-button-view';
 import {render} from './framework/render';
 import PointsApiService from './api-service/points-api-service';
 import DestinationsApiService from './api-service/destinations-api-service';
@@ -29,7 +29,7 @@ const tripPresenter = new TripPresenter({
   destinationsModel: destinationsModel,
   offersModel: offersModel,
   filtersModel: filtersModel,
-  onNewPointDestroy: handleNewPointClose
+  onNewPointDestroy: newPointCloseHandler
 });
 const filterPresenter = new FilterPresenter({
   filterContainer: headerContainer.querySelector('.trip-controls__filters'),
@@ -38,14 +38,14 @@ const filterPresenter = new FilterPresenter({
 });
 
 const newPointButtonComponent = new NewPointButtonView({
-  onClick: handleNewPointButtonClick
+  onClick: NewPointButtonClickHandler
 });
 
-function handleNewPointClose() {
+function newPointCloseHandler() {
   newPointButtonComponent.element.disabled = false;
 }
 
-function handleNewPointButtonClick() {
+function NewPointButtonClickHandler() {
   tripPresenter.createPoint();
   newPointButtonComponent.element.disabled = true;
 }

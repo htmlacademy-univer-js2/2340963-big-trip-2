@@ -24,8 +24,8 @@ const getTotalAmount = (points, offers) => {
 const getTripTitle = (points, destinations, startPoint, endPoint) => {
   const destinationStart = destinations.find((dest) => dest.id === startPoint.destination);
   const destinationEnd = destinations.find((dest) => dest.id === endPoint.destination);
-  const destination = destinations.find((dest) => dest.id === points.find(
-    (point) => point.id !== startPoint.id && point.id !== endPoint.id).destination);
+  const destination = points.length > 2 ? destinations.find((dest) => dest.id === points.find(
+    (point) => point.id !== startPoint.id && point.id !== endPoint.id).destination) : '';
   switch(points.length) {
     case 1:
       return destinationStart.name;

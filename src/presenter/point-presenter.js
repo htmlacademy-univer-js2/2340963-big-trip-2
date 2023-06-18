@@ -1,5 +1,5 @@
-import PointView from '../view/point';
-import EditingPointView from '../view/editing-point';
+import PointView from '../view/point-view';
+import EditingPointView from '../view/editing-point-view';
 import {remove, render, replace} from '../framework/render';
 import {Mode, UpdateType, UserAction} from '../const';
 
@@ -64,18 +64,6 @@ export default class PointPresenter{
     remove(previousEditPointComponent);
   };
 
-  destroy() {
-    remove(this.#pointComponent);
-    remove(this.#editPointComponent);
-  }
-
-  resetView() {
-    if (this.#mode !== Mode.DEFAULT) {
-      this.#editPointComponent.reset(this.#point);
-      this.#replaceEditPointToPoint();
-    }
-  }
-
   setSaving() {
     if (this.#mode === Mode.EDITING) {
       this.#editPointComponent.updateElement({
@@ -109,25 +97,37 @@ export default class PointPresenter{
     this.#editPointComponent.shake(resetFormState);
   }
 
-  #onEscKeyDown = (event) => {
-    if(event.key === 'Escape' || event.key === 'Esc'){
-      event.preventDefault();
+  destroy() {
+    remove(this.#pointComponent);
+    remove(this.#editPointComponent);
+  }
+
+  resetView() {
+    if (this.#mode !== Mode.DEFAULT) {
       this.#editPointComponent.reset(this.#point);
       this.#replaceEditPointToPoint();
     }
-  };
+  }
 
   #replacePointToEditPoint = () => {
     replace(this.#editPointComponent, this.#pointComponent);
-    document.addEventListener('keydown', this.#onEscKeyDown);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
     this.#handleModeChange();
     this.#mode = Mode.EDITING;
   };
 
   #replaceEditPointToPoint = () => {
     replace(this.#pointComponent, this.#editPointComponent);
-    document.removeEventListener('keydown', this.#onEscKeyDown);
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = Mode.DEFAULT;
+  };
+
+  #escKeyDownHandler = (event) => {
+    if(event.key === 'Escape' || event.key === 'Esc'){
+      event.preventDefault();
+      this.#editPointComponent.reset(this.#point);
+      this.#replaceEditPointToPoint();
+    }
   };
 
   #handleFavoriteClick = () => {

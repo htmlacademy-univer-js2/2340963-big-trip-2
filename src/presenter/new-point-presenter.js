@@ -1,6 +1,6 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
 import {UpdateType, UserAction} from '../const';
-import EditingPointView from '../view/editing-point';
+import EditingPointView from '../view/editing-point-view';
 
 export default class NewPointPresenter {
   #pointListContainer = null;
@@ -40,19 +40,6 @@ export default class NewPointPresenter {
     document.addEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  destroy() {
-    if (this.#pointEditComponent === null) {
-      return;
-    }
-
-    this.#handleDestroy();
-
-    remove(this.#pointEditComponent);
-    this.#pointEditComponent = null;
-
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
-  }
-
   setSaving() {
     this.#pointEditComponent.updateElement({
       isDisabled: true,
@@ -71,6 +58,18 @@ export default class NewPointPresenter {
     this.#pointEditComponent.shake(resetFormState);
   }
 
+  destroy() {
+    if (this.#pointEditComponent === null) {
+      return;
+    }
+
+    this.#handleDestroy();
+
+    remove(this.#pointEditComponent);
+    this.#pointEditComponent = null;
+
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+  }
 
   #handleFormSubmit = (point) => {
     this.#handleFavoriteChange(

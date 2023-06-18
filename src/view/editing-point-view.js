@@ -67,7 +67,7 @@ const createPhotosTemplates = (destinationPhotos) => {
   return photosTemplates;
 };
 
-export const editingPoint = (point, destinations, offersIds, isNewPoint) => {
+export const editingPointView = (point, destinations, offersIds, isNewPoint) => {
   const {type, destination, startDate, endDate, price, offers, isSaving, isDeleting, isDisabled} = point;
   const dateFrom = startDate !== null ? humanizePointDate(startDate, 'DD/MM/YY HH:mm') : '';
   const dateTo = endDate !== null ? humanizePointDate(endDate, 'DD/MM/YY HH:mm') : '';
@@ -183,7 +183,7 @@ export default class EditingPointView extends AbstractStatefulView{
   }
 
   get template(){
-    return editingPoint(this._state, this.#destinations, this.#offers, this.#isNewPoint);
+    return editingPointView(this._state, this.#destinations, this.#offers, this.#isNewPoint);
   }
 
   #formSubmitHandler = (event) => {

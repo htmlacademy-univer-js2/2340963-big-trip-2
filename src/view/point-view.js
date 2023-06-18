@@ -11,7 +11,7 @@ const createOffersTemplates = (allOffers, checkedOffers) => {
   return result;
 };
 
-export const Point = (point, destinations, offersIds) => {
+export const pointView = (point, destinations, offersIds) => {
   const {type, destination, startDate, endDate, price, isFavorite, offers} = point;
   const dateFrom = startDate !== null ? humanizePointDate(startDate, 'DD/MM/YY HH:mm') : '';
   const dateTo = endDate !== null ? humanizePointDate(endDate, 'DD/MM/YY HH:mm') : '';
@@ -74,7 +74,7 @@ export default class PointView extends AbstractView{
   }
 
   get template(){
-    return Point(this.#point, this.#destinations, this.#offers);
+    return pointView(this.#point, this.#destinations, this.#offers);
   }
 
   #editClickHandler = (event) => {
