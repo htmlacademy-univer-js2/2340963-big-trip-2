@@ -1,6 +1,6 @@
 import {humanizePointDate} from '../utils/point';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
-import {types} from '../const';
+import {TYPES} from '../const';
 import {upperFirst} from '../utils/common';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import he from 'he';
 
 const BLANK_POINT = {
-  type: types[0],
+  type: TYPES[0],
   destination: 1,
   startDate: dayjs(),
   endDate: dayjs(),
@@ -48,7 +48,7 @@ const createOffersTemplates = (allOffers, checkedOffers, isDisabled) => {
 
 const createTypesTemplates = (currentType, isDisabled) => {
   let typesTemplates = '';
-  types.map((type) => {
+  TYPES.map((type) => {
     const checked = currentType === type ? 'checked' : '';
     typesTemplates += `<div class="event__type-item">
     <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type"
@@ -67,7 +67,7 @@ const createPhotosTemplates = (destinationPhotos) => {
   return photosTemplates;
 };
 
-export const editingPoint = (point, destinations, offersIds, isNewPoint) => {
+export const editingPointView = (point, destinations, offersIds, isNewPoint) => {
   const {type, destination, startDate, endDate, price, offers, isSaving, isDeleting, isDisabled} = point;
   const dateFrom = startDate !== null ? humanizePointDate(startDate, 'DD/MM/YY HH:mm') : '';
   const dateTo = endDate !== null ? humanizePointDate(endDate, 'DD/MM/YY HH:mm') : '';
@@ -183,7 +183,7 @@ export default class EditingPointView extends AbstractStatefulView{
   }
 
   get template(){
-    return editingPoint(this._state, this.#destinations, this.#offers, this.#isNewPoint);
+    return editingPointView(this._state, this.#destinations, this.#offers, this.#isNewPoint);
   }
 
   #formSubmitHandler = (event) => {

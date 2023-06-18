@@ -1,13 +1,8 @@
 import {sortPointDay, sortPointTime} from './point';
 import dayjs from 'dayjs';
+import {SortType} from '../const';
 
 export const upperFirst = (str) => str[0].toUpperCase() + str.slice(1);
-
-export const SortType = {
-  DEFAULT: 'day',
-  TIME: 'time-descending',
-  PRICE: 'price-descending'
-};
 
 export const sortPointsByType = {
   [SortType.DEFAULT]: (points) => points.sort(sortPointDay),

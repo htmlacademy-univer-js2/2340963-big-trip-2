@@ -1,16 +1,5 @@
 import dayjs from 'dayjs';
-
-export const FilterType = {
-  EVERYTHING: 'everything',
-  FUTURE: 'future',
-  PAST: 'past',
-};
-
-export const NoPointsTextType = {
-  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
-  [FilterType.PAST]: 'There are no past events now',
-  [FilterType.FUTURE]: 'There are no future events now'
-};
+import {FilterType} from '../const';
 
 const filterByPast = (date, param) => dayjs().isAfter(dayjs(date), param);
 

@@ -1,7 +1,8 @@
 import AbstractView from '../framework/view/abstract-view';
-import {SortType} from '../utils/common';
+import {SortType} from '../const';
 
-const sorting = (currentSortType) => (
+
+const sortingView = (currentSortType) => (
   `
   <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
             <div class="trip-sort__item  trip-sort__item--day">
@@ -46,7 +47,7 @@ export default class SortingView extends AbstractView{
   }
 
   get template(){
-    return sorting(this.#currentSortType);
+    return sortingView(this.#currentSortType);
   }
 
   #sortTypeChangeHandler = (event) => {
